@@ -1,0 +1,13 @@
+{% extends 'base.html'  %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<h1>{{character.name}}</h1>
+<img src="{{character.image}}" alt=""> 
+<p>{{character.description}}</p>
+<p><a href="{{character.wiki}}">Character Wiki</a></p>
+<br>
+<a href="/search">Search Again</a>
+
+{% endblock %}

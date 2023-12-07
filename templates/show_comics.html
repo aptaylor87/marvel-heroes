@@ -1,0 +1,39 @@
+{% extends 'base.html'  %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+{% for comic in comics %}
+<div>
+    <h3>{{comic.title}}</h3>
+    <p>Description: {{comic.description}}</p>
+    <p><a href="{{comic.marvel_url}}" target="_blank">Marvel Link</a></p>
+    <image src="{{comic.image_url}}/portrait_medium.{{comic.image_type}}"></image>
+    {% if not g.user %}
+    <a href="/register">Sign up to create reading list</a>
+
+    {% elif comic.id in user_comics %}
+    <a href=/reading_list>Added to Reading List</a>
+    {% else %}
+
+    <button class="add-to-reading-list" data-userid="{{ g.user.id }}" data-comicid="{{comic.id}}" data-charcterone="{{character_one.name}}" data-charctertwo="{{character_two.name}}">Add to Reading List</button>
+    {% endif %}
+    
+</div>
+{% endfor %}
+
+{% if offset - 20 >= 0 %}
+
+<a href="/search_results/{{character_one.id}}/{{character_two.id}}/{{offset|int() - 20}}/{{total_results}}">Previous</a>
+{% endif %}
+
+{% if offset < total_results %}
+
+<a href="/search_results/{{character_one.id}}/{{character_two.id}}/{{offset|int() + 20}}/{{total_results}}">Next</a>
+{% endif %}
+
+<script src="https://unpkg.com/jquery"></script>
+<script src="https://unpkg.com/axios/dist/axios.js"></script>
+<script src="/static/main.js"></script>
+
+{% endblock %}

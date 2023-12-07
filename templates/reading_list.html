@@ -1,0 +1,20 @@
+{% extends 'base.html'  %}
+{% block title %}Here is your secret readinglist{% endblock %}
+
+{% block content %}
+
+{% for comic in comics %}
+<div>
+    <h3>{{comic.title}}</h3>
+    <p>Description: {{comic.description}}</p>
+    <p><a href="{{comic.marvel_url}}" target="_blank">Marvel Link</a></p>
+    <image src="{{comic.image_url}}/portrait_medium.{{comic.image_type}}"></image>
+    <button class="delete-comic" data-userid="{{ g.user.id }}" data-comicid="{{comic.id}}">Remove from reading list</button>
+    
+</div>
+  
+{% endfor %}
+<script src="https://unpkg.com/jquery"></script>
+<script src="https://unpkg.com/axios/dist/axios.js"></script>
+<script src="static/main.js"></script>
+{% endblock %}

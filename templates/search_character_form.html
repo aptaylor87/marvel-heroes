@@ -1,0 +1,24 @@
+{% extends 'base.html'  %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<h1>Search for two characters to get a list of comics featuring both!</h1>
+
+<form action="" method="POST">
+    {{ form.hidden_tag() }}
+    {% for field in form
+    if field.widget.input_type != 'hidden' %}
+    <p>
+        {{field.label}}
+        {{field}}
+
+        {% for error in field.erros %}
+        {{ error }}
+        {% endfor %}
+    </p>
+    {% endfor %}
+    <button>Search</button>
+</form>
+
+{% endblock %}

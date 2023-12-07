@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/static/app.css">
+  <title>{% block title %}{% endblock%}</title>
+</head>
+
+<body>
+  <nav>
+    <p>Nav</p>
+    <li><a href="/search">Search</a></li>
+  {% if not g.user %}
+  <li><a href="/register">Sign up</a></li>
+  <li><a href="/login">Log in</a></li>
+  {% else %}
+  <li><a href="/reading_list">View readinglist</li>
+  <li><a href="/logout">Log out</a></li>
+  {% endif %}
+  </nav>
+  <main id="content">
+
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+    {% block content %} {% endblock %}
+    
+  </main>
+
+</body>
+
+</html>
