@@ -23,6 +23,9 @@ class Character(db.Model):
     image_url = db.Column(db.String)
 
     image_type = db.Column(db.String)
+
+    def __repr__(self):
+        return f"<Chracter is #{self.id}: {self.name}>"
     
 
 
@@ -44,7 +47,8 @@ class Comic(db.Model):
 
     marvel_url = db.Column(db.String)
 
-    
+    def __repr__(self):
+        return f"<Comic is #{self.id}: {self.title}>" 
     
     
 
@@ -93,7 +97,7 @@ class User(db.Model):
 
     username = db.Column(db.Text,
                          nullable=False,
-                         unique=True,
+                         unique=True
     )
 
     password = db.Column(db.Text,

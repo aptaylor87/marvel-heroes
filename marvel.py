@@ -29,7 +29,6 @@ def get_character_info(charactername):
     """This function will take the text name of a charcter and return a dict with their name, description, image url and url for a link to the marvel sit."""
     query = f"characters?name={charactername}"
     query_url = base_url + query + "&ts=" + ts + "&apikey=" + api_key + "&hash=" + hasht
-    print(query_url)
     data = requests.get(query_url).json()['data']['results'][0]
     
     heroname = data['name']
