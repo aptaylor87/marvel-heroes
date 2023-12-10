@@ -10,18 +10,22 @@
 </head>
 
 <body>
+  <header>
   <nav>
-    <p>Nav</p>
-    <li><a href="/search">Search</a></li>
-  {% if not g.user %}
-  <li><a href="/register">Sign up</a></li>
-  <li><a href="/login">Log in</a></li>
-  {% else %}
-  <li><a href="/reading_list">View readinglist</li>
-  <li><a href="/logout">Log out</a></li>
-  {% endif %}
-  </nav>
-  <main id="content">
+    <label class="logo">Marvel Team-up</label>
+    <ul>
+      <li><a href="/search">Search</a></li>
+      {% if not g.user %}
+      <li><a href="/register">Sign up</a></li>
+      <li><a href="/login">Log in</a></li>
+      {% else %}
+      <li><a href="/reading_list">Reading List</li>
+      <li><a href="/logout">Log out</a></li>
+    {% endif %}
+    </ul>
+    </nav>
+  </header>
+    <main id="content">
 
     {% for category, message in get_flashed_messages(with_categories=True) %}
   <div class="alert alert-{{ category }}">{{ message }}</div>
@@ -31,5 +35,5 @@
   </main>
 
 </body>
-
+<footer><p>Data provided by Marvel. © 2014 Marvel</p></footer>
 </html>

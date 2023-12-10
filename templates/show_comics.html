@@ -2,26 +2,33 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-
+<div class="container">
 {% for comic in comics %}
-<div>
+<div class="card">
+    <image src="{{comic.image_url}}/portrait_xlarge.{{comic.image_type}}"></image>
+
     <h3>{{comic.title}}</h3>
-    <p>Description: {{comic.description}}</p>
+    <p class="description">Description: {{comic.description}}</p>
     <p><a href="{{comic.marvel_url}}" target="_blank">Marvel Link</a></p>
-    <image src="{{comic.image_url}}/portrait_medium.{{comic.image_type}}"></image>
+
+    <!-- <div class="reading-list"> -->
     {% if not g.user %}
-    <a href="/register">Sign up to create reading list</a>
+
+    
+    <a href="/register" class="reading-list">Sign up to create reading list</a>
 
     {% elif comic.id in user_comics %}
-    <a href=/reading_list>Added to Reading List</a>
+    <a href=/reading_list class="reading-list">Added to Reading List</a>
     {% else %}
 
-    <button class="add-to-reading-list" data-userid="{{ g.user.id }}" data-comicid="{{comic.id}}" data-charcterone="{{character_one.name}}" data-charctertwo="{{character_two.name}}">Add to Reading List</button>
-    {% endif %}
+    <button class="add-to-reading-list reading-list" data-userid="{{ g.user.id }}" data-comicid="{{comic.id}}" data-charcterone="{{character_one.name}}" data-charctertwo="{{character_two.name}}">Add to Reading List</button>
     
+    {% endif %}
+<!-- </div> -->
 </div>
 {% endfor %}
 
+<div class="pagination">
 {% if offset - 20 >= 0 %}
 
 <a href="/search_results/{{character_one.id}}/{{character_two.id}}/{{offset|int() - 20}}/{{total_results}}">Previous</a>
@@ -31,7 +38,8 @@
 
 <a href="/search_results/{{character_one.id}}/{{character_two.id}}/{{offset|int() + 20}}/{{total_results}}">Next</a>
 {% endif %}
-
+</div>
+</div>
 <script src="https://unpkg.com/jquery"></script>
 <script src="https://unpkg.com/axios/dist/axios.js"></script>
 <script src="/static/main.js"></script>

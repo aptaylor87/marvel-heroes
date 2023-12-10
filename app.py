@@ -1,6 +1,8 @@
+import os
+
 from flask import Flask, request, render_template, redirect, flash, session, g, jsonify
 
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask_debugtoolbar import DebugToolbarExtension
 
 from forms import CharacterSearchForm, UserForm
 from models import db, connect_db, Character, User, Comic, Reading_List
@@ -10,12 +12,13 @@ CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///marvel_app_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    os.environ.get('DATABASE_URL', 'postgresql:///marvel_app_db'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] =True
-app.config['SECRET_KEY'] = "NoSecretsHere"
+app.config['SQLALCHEMY_ECHO'] = False
+app.config['SECRET_KEY'] = "un7FzLX5iidp7d"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-debug = DebugToolbarExtension(app)
+# debug = DebugToolbarExtension(app)
 
 error_message = "Something went wrong"
 
@@ -48,11 +51,11 @@ def do_logout():
 
 @app.route('/')
 def home_page():
-    """this route is going to serve as a description/intro to the project and will be finished in the polishing stage"""
-    return render_template('home.html')
+    """redirects to search, which serves as the home page"""
+    return redirect('/search')
 
 
-@app.route('/register', methods = ["GET", "POST"])
+@app.route('/register', methods = ['GET', 'POST'])
 def register_user():
     """Displays a user registration form, and then creates the user when form is submitted"""
     form = UserForm()
@@ -63,7 +66,7 @@ def register_user():
         try:
             db.session.commit()
             do_login(new_user)
-            flash("Welcome, you have created your account")
+            flash('Welcome, you have created your account')
             return redirect('/search')
         except:
             flash(error_message)
@@ -82,11 +85,11 @@ def login_user():
         user = User.authenticate(username, password)
 
         if user:
-            flash(f"Welcome Back, {user.username}")
+            flash(f'Welcome Back, {user.username}')
             do_login(user)
             return redirect('/search')
         else:
-            flash("Invalid username/password.")
+            flash('Invalid username/password.')
 
     return render_template('login.html', form=form)
 
@@ -94,12 +97,12 @@ def login_user():
 def logout_user():
     """Logs the user out"""
     do_logout()
-    flash("Goodbye!")
+    flash('Goodbye!')
     return redirect('/search')
 
 
 
-@app.route('/search', methods =["GET", "POST"])
+@app.route('/search', methods =['GET', 'POST'])
 def search():
     """This page renders the search form, or it renders the first page of search results if they've been submitted. This route calls the Marvel API to a specific route that will return a list of comics that feature both of the characters included in the request. 
     
@@ -166,8 +169,8 @@ def show_reading_list():
     """This route directs to a page showing a user the comics they have added to their reading list. If a user is not logged in the are redirected back to search with a flashed message"""
 
     if  not g.user:
-        flash("Log in or create an account to make a reading list.")
-        return redirect("/search")
+        flash('Log in or create an account to make a reading list.')
+        return redirect('/search')
 
     user  = User.query.get_or_404(g.user.id)
     comics = user.comics
@@ -179,11 +182,11 @@ def show_reading_list():
 @app.route('/api/addreadinglist', methods=['POST'])
 def create_readinglist_item():
     """This is an API route that is used in main.js. It takes in a comic id and user id. First a check is run to see if a comic with this id is in the comics table, and if not, it creates one. Then the comic id and user id are used to create a reading list item. """
-    user_id = request.json["user_id"]
-    comic_id = request.json["comic_id"]
+    user_id = request.json['user_id']
+    comic_id = request.json['comic_id']
     
-    character_one = request.json["character_one"]
-    character_two  = request.json["character_two"]
+    character_one = request.json['character_one']
+    character_two  = request.json['character_two']
 
 
     if Comic.query.filter(Comic.id == comic_id).count():
@@ -206,18 +209,18 @@ def create_readinglist_item():
 
     return jsonify(reading_list=reading_list.serialize_reading_list())
 
-@app.route('/api/deletereadinglist', methods=["POST"])
+@app.route('/api/deletereadinglist', methods=['POST'])
 def delete_readinglist_item():
     """This is an API route that is used in main.js. It takes a user ID and comic id and removes the relevant entry from the reading_list table"""
 
-    user_id = request.json["user_id"]
-    comic_id = request.json["comic_id"]
+    user_id = request.json['user_id']
+    comic_id = request.json['comic_id']
     reading_list_comic = Reading_List.query.filter(Reading_List.comic_id == comic_id, Reading_List.user_id == user_id).first()
 
     db.session.delete(reading_list_comic)
     db.session.commit()
 
-    return jsonify(message="deleted")
+    return jsonify(message='deleted')
 
 
 

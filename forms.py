@@ -6,8 +6,8 @@ from wtforms.validators import DataRequired, Length
 class CharacterSearchForm(FlaskForm):
     """Character Search Form"""
 
-    hero_one = TextAreaField('Hero One', validators=[DataRequired()])
-    hero_two = TextAreaField('Hero Two', validators=[DataRequired()])
+    hero_one = StringField('Character One', validators=[DataRequired()])
+    hero_two = StringField('Character Two', validators=[DataRequired()])
 
 class UserForm(FlaskForm):
     """Form for adding users and logging in users"""

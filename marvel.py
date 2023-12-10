@@ -1,11 +1,11 @@
-# https://stackoverflow.com/questions/53356636/invalid-hash-timestamp-and-key-combination-in-marvel-api-call
-
-# import dependencies
-import hashlib  #This is needed for the hashing library
-import time   #This is needed to produce a time stamp
-import requests #This is used to request information from the API
+import hashlib 
+import time   
+import requests 
 from secret import API_PRIVATE_KEY_BYTES, API_PUBLIC_KEY_BYTES, API_PUBLIC_KEY
 from models import db, Character, Comic
+
+# This post was very helpful in getting authentication with the API to work.
+# https://stackoverflow.com/questions/53356636/invalid-hash-timestamp-and-key-combination-in-marvel-api-call
 
 #Constructing the Hash
 m = hashlib.md5()   #This assigns the method to the variable m.  Marvel 

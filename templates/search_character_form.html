@@ -1,24 +1,34 @@
 {% extends 'base.html'  %}
-{% block title %}Home{% endblock %}
+{% block title %}Search{% endblock %}
 
 {% block content %}
 
-<h1>Search for two characters to get a list of comics featuring both!</h1>
 
-<form action="" method="POST">
-    {{ form.hidden_tag() }}
-    {% for field in form
-    if field.widget.input_type != 'hidden' %}
-    <p>
-        {{field.label}}
-        {{field}}
 
-        {% for error in field.erros %}
-        {{ error }}
+<div class="container">
+    
+    <form action="" method="POST">
+        <h1>Search</h1>
+        <P>Enter the names of two Marvel characters to get a list of comics featuring both of them. It can be two heroes teaming up or a search for battles between your favorite hero and villain.</P>
+        {{ form.hidden_tag() }}
+    
+        {% for field in form
+        if field.widget.input_type != 'hidden' %}
+        <div class="form-group "> 
+    
+            {{field.label}}
+            {{field(class_="form-control")}}
+    
+            {% for error in field.errors %}
+            {{ error }}
+            {% endfor %}
+        </div>
         {% endfor %}
-    </p>
-    {% endfor %}
-    <button>Search</button>
-</form>
-
+        <input type="submit" class="btn" value="Search">
+    
+    </form>
+    </div> 
+    <script src="https://unpkg.com/jquery"></script>
+    <script src="https://unpkg.com/axios/dist/axios.js"></script>
+    <script src="/static/main.js"></script>
 {% endblock %}
