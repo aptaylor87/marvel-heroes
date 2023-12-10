@@ -1,11 +1,18 @@
+import os
+
 import hashlib 
 import time   
 import requests 
-from secret import API_PRIVATE_KEY_BYTES, API_PUBLIC_KEY_BYTES, API_PUBLIC_KEY
+# from secret import SECRET_API_PRIVATE_KEY, SECRET_API_PUBLIC_KEY
 from models import db, Character, Comic
 
 # This post was very helpful in getting authentication with the API to work.
 # https://stackoverflow.com/questions/53356636/invalid-hash-timestamp-and-key-combination-in-marvel-api-call
+
+
+API_PRIVATE_KEY_BYTES = bytes((os.environ.get('API_PRIVATE_KEY', SECRET_API_PRIVATE_KEY)), 'utf-8')
+
+API_PUBLIC_KEY_BYTES = bytes((os.environ.get('API_PUBLIC_KEY', SECRET_API_PUBLIC_KEY)), 'utf-8')
 
 #Constructing the Hash
 m = hashlib.md5()   #This assigns the method to the variable m.  Marvel 
@@ -19,9 +26,11 @@ m.update(API_PUBLIC_KEY_BYTES) #This adds the public key to
     #the hash which is set up the same way as the private key.
 hasht = m.hexdigest()    #Marvel requires the string to be in hex, even those this isn't noted in their documentation.
 
+
+
 #constructing the base query
 base_url = "http://gateway.marvel.com/v1/public/"  #provided in Marvel API documentation
-api_key = API_PUBLIC_KEY #This is not a duplication. It is the public key saved to a variable in non-byte format which needs to be included in the authentication parameter for queries.
+api_key = (os.environ.get('API_PUBLIC_KEY', SECRET_API_PUBLIC_KEY)) #This is not a duplication. It is the public key saved to a variable in non-byte format which needs to be included in the authentication parameter for queries.
 
 
 
