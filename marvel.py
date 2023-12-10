@@ -9,6 +9,8 @@ from models import db, Character, Comic
 # This post was very helpful in getting authentication with the API to work.
 # https://stackoverflow.com/questions/53356636/invalid-hash-timestamp-and-key-combination-in-marvel-api-call
 
+SECRET_API_PRIVATE_KEY = "fake"
+SECRET_API_PUBLIC_KEY = "also fake"
 
 API_PRIVATE_KEY_BYTES = bytes((os.environ.get('API_PRIVATE_KEY', SECRET_API_PRIVATE_KEY)), 'utf-8')
 
