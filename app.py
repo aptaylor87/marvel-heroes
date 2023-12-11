@@ -66,7 +66,7 @@ def register_user():
         try:
             db.session.commit()
             do_login(new_user)
-            flash('Welcome, you have created your account')
+            flash('Welcome!')
             return redirect('/search')
         except:
             flash(error_message)
